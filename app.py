@@ -4,16 +4,19 @@ import json
 import os
 import math
 
-app = Flask(__name__)
-
 # ==========================================
 # PROJECT CONFIGURATION
 # ==========================================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# HTML files are directly inside the main project folder.
+app = Flask(__name__, template_folder=BASE_DIR)
+
+# JSON file is also directly inside the main project folder.
 JSON_FILE = os.path.join(
-    BASE_DIR, "data", "maharashtra_market_data.json"
+    BASE_DIR,
+    "maharashtra_market_data.json"
 )
 
 DATA_SOURCE = (
@@ -30,7 +33,6 @@ RATNAGIRI_MARKET = "APMC Ratnagiri (Nachane)"
 # ==========================================
 
 def normalize_product(product):
-
     return " ".join(
         str(product).strip().casefold().split()
     )
@@ -42,10 +44,10 @@ def normalize_product(product):
 
 def load_market_data():
 
-    if not os.path.exists(JSON_FILE):
+    if not os.path.isfile(JSON_FILE):
         raise FileNotFoundError(
             "maharashtra_market_data.json was not found "
-            "inside the data folder."
+            "in the main project folder."
         )
 
     with open(JSON_FILE, "r", encoding="utf-8") as file:
@@ -79,8 +81,8 @@ def load_market_data():
             ):
                 continue
 
-            # Government price is Rs/quintal.
-            # 1 quintal = 100 kg.
+            # Government mandi prices are in Rs/quintal.
+            # Convert them into Rs/kg.
             price_per_kg = round(modal_price / 100.0, 2)
 
             data.append({
@@ -283,7 +285,6 @@ def home():
 
     except Exception as error:
         print("HOME PAGE ERROR:", repr(error))
-
         return "Home Page Error: " + str(error), 500
 
 
@@ -310,14 +311,6 @@ def recommend():
         )
 
         transport_costs = get_transport_costs(request.form)
-
-        print("\n========== RECOMMENDATION DEBUG ==========")
-        print("FORM DATA:", dict(request.form))
-        print("SELECTED PRODUCT:", product)
-        print("QUANTITY:", quantity)
-        print("PRODUCTION COST:", production_cost)
-        print("PUNE TRANSPORT:", transport_costs[PUNE_MARKET])
-        print("RATNAGIRI TRANSPORT:", transport_costs[RATNAGIRI_MARKET])
 
         if not product:
             raise ValueError("Please select a product.")
@@ -356,23 +349,7 @@ def recommend():
                 "No market results could be calculated."
             )
 
-        for item in results:
-            print(
-                "MARKET:", item["market"],
-                "| SELLING PRICE:", item["price_per_kg"],
-                "| TRANSPORT:", item["transport_cost_per_kg"],
-                "| PROFIT/KG:", item["profit_per_kg"],
-                "| TOTAL PROFIT:", item["total_profit"]
-            )
-
         best_result = results[0]
-
-        best_market = best_result["market"]
-        best_profit = best_result["total_profit"]
-
-        print("RECOMMENDED MARKET:", best_market)
-        print("BEST ESTIMATED PROFIT:", best_profit)
-        print("==========================================\n")
 
         return render_template(
             "result.html",
@@ -381,8 +358,8 @@ def recommend():
             product=product,
             quantity=quantity,
             production_cost=production_cost,
-            best_market=best_market,
-            best_profit=best_profit,
+            best_market=best_result["market"],
+            best_profit=best_result["total_profit"],
             transport_cost_pune=transport_costs[PUNE_MARKET],
             transport_cost_ratnagiri=transport_costs[RATNAGIRI_MARKET],
             data_source=DATA_SOURCE
@@ -409,7 +386,7 @@ def recommend():
 
 
 # ==========================================
-# ANALYTICS DASHBOARD
+# BUSINESS DASHBOARD
 # ==========================================
 
 @app.route("/dashboard")
@@ -631,7 +608,7 @@ def simulator():
 
 
 # ==========================================
-# SMALL-QUANTITY SELLING ADVISOR
+# SMALL QUANTITY SELLING ADVISOR
 # ==========================================
 
 @app.route(
@@ -661,7 +638,6 @@ def small_quantity_advisor():
 
         if request.method == "POST":
 
-            # Accept both form field names for compatibility.
             selected_product = (
                 request.form.get("selected_product")
                 or request.form.get("product", "")
@@ -691,27 +667,11 @@ def small_quantity_advisor():
                     request.form
                 )
 
-                print("\n========== SMALL QUANTITY DEBUG ==========")
-                print("FORM DATA:", dict(request.form))
-                print("SELECTED PRODUCT:", selected_product)
-                print("PRODUCTION COST:", cost)
-                print("PUNE TRANSPORT:", transport_costs[PUNE_MARKET])
-                print("RATNAGIRI TRANSPORT:", transport_costs[RATNAGIRI_MARKET])
-
                 selected_data = [
                     row for row in data
                     if normalize_product(row["product"])
                     == normalize_product(selected_product)
                 ]
-
-                print("MATCHED RECORDS:", len(selected_data))
-
-                for row in selected_data:
-                    print(
-                        "MATCH:", row["product"],
-                        "| MARKET:", row["market"],
-                        "| PRICE PER KG:", row["price_per_kg"]
-                    )
 
                 if not selected_data:
                     error = (
@@ -752,9 +712,6 @@ def small_quantity_advisor():
                             ]
                         })
 
-                    print("QUANTITY RESULTS GENERATED:", len(quantity_results))
-                    print("==========================================\n")
-
             except ValueError as validation_error:
                 error = str(validation_error)
 
@@ -782,32 +739,15 @@ def small_quantity_advisor():
 
 
 # ==========================================
-# RUN THE FLASK APPLICATION
+# VERCEL AND LOCAL APPLICATION ENTRY POINT
 # ==========================================
 
 if __name__ == "__main__":
 
-    print("\n===================================")
-    print("          GRAMVYAPAR AI")
-    print("===================================")
-
-    print("\nHome Page:")
-    print("http://127.0.0.1:5000/")
-
-    print("\nDashboard:")
-    print("http://127.0.0.1:5000/dashboard")
-
-    print("\nBusiness Simulator:")
-    print("http://127.0.0.1:5000/simulator")
-
-    print("\nSmall Quantity Advisor:")
-    print("http://127.0.0.1:5000/small-quantity-advisor")
-
-    print("\nStarting Flask application...\n")
+    print("Starting GramVyapar AI...")
 
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True,
-        use_reloader=False
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
     )
