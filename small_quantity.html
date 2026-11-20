@@ -1,0 +1,813 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Small-Quantity Selling Advisor | GramVyapar AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #176b45;
+            --dark-green: #104c32;
+            --light-green: #eaf5ed;
+            --mint: #dff1e5;
+            --background: #f3f7f3;
+            --text: #24352b;
+            --muted: #738078;
+            --border: #e5ece6;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVIGATION */
+
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 17px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .brand h1 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin: 0;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #526158;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--green);
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 88%;
+            max-width: 1100px;
+            margin: 38px auto 55px;
+        }
+
+        /* PAGE HEADING */
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--green);
+            background: var(--mint);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .page-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 32px;
+            margin: 0 0 10px;
+            font-weight: 800;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 750px;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* CARDS */
+
+        .card {
+            background: white;
+            padding: 27px;
+            margin-bottom: 24px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 22px rgba(24, 75, 46, 0.045);
+        }
+
+        .card h3 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .description {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #415347;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dce6dd;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fbfdfb;
+            color: var(--text);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(23, 107, 69, 0.18);
+        }
+
+        /* ERROR */
+
+        .error {
+            color: #b42318;
+            background: #fff0ef;
+            border: 1px solid #f4c9c5;
+            padding: 14px;
+            border-radius: 9px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* RESULTS */
+
+        .results-heading {
+            margin-bottom: 22px;
+        }
+
+        .results-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 25px;
+            margin: 0 0 9px;
+            font-weight: 800;
+        }
+
+        .results-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .product-highlight {
+            background: var(--light-green);
+            padding: 14px 17px;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            color: #45634e;
+            font-size: 14px;
+        }
+
+        .product-highlight strong {
+            color: var(--dark-green);
+        }
+
+        /* QUANTITY SECTION */
+
+        .quantity-section {
+            margin-top: 22px;
+            padding: 23px;
+            background: #fbfdfb;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+
+        .quantity-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 17px;
+        }
+
+        .quantity-heading h3 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 19px;
+        }
+
+        .quantity-tag {
+            background: var(--mint);
+            color: var(--green);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .best-box {
+            background: linear-gradient(120deg, #e7f5eb, #f1f9f3);
+            border: 1px solid #d5eadb;
+            padding: 17px;
+            border-radius: 11px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 14px;
+            color: #52665a;
+        }
+
+        .best-box strong {
+            color: var(--dark-green);
+        }
+
+        .best-profit {
+            color: #168044;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--green);
+            color: white;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f2f8f3;
+        }
+
+        .best {
+            color: #168044;
+            font-weight: 800;
+        }
+
+        .loss {
+            color: #c0392b;
+            font-weight: 800;
+        }
+
+        /* NOTE */
+
+        .note {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 5px;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: var(--dark-green);
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 27px 15px;
+            background: var(--dark-green);
+            color: #e3f0e7;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 850px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            .container {
+                width: 92%;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                gap: 13px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 93%;
+                margin: 25px auto 40px;
+            }
+
+            .page-heading h2 {
+                font-size: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 19px;
+                border-radius: 14px;
+            }
+
+            .quantity-section {
+                padding: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        <div class="brand-icon">🌱</div>
+        <h1>GramVyapar AI</h1>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/simulator">Business Simulator</a>
+        <a href="/small-quantity-advisor" class="active">Small Quantity Advisor</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <span class="eyebrow">🌾 SMART SELLING ASSISTANT</span>
+
+        <h2>Small-Quantity Selling Advisor</h2>
+
+        <p>
+            Explore how selling different quantities of your product
+            can affect your estimated profit. Compare available markets
+            and identify a potentially better selling opportunity.
+        </p>
+
+    </div>
+
+
+    <!-- INPUT FORM -->
+
+    <div class="card">
+
+        <h3>⚙️ Enter Your Business Details</h3>
+
+        <p class="description">
+            Enter your product, production cost and market-wise
+            transportation expenses to compare different selling quantities.
+        </p>
+
+        <form method="POST" action="/small-quantity-advisor">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="selected_product">Select Product</label>
+
+                    <select name="selected_product" id="selected_product" required>
+
+                        <option value="">Choose a product</option>
+
+                        {% for item in products %}
+
+                        <option value="{{ item }}"
+                            {% if item == selected_product %}selected{% endif %}>
+                            {{ item }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="production_cost">Production Cost per kg (₹)</label>
+
+                    <input
+                        type="number"
+                        id="production_cost"
+                        name="production_cost"
+                        min="0"
+                        step="0.01"
+                        value="{{ production_cost }}"
+                        placeholder="Enter production cost"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="transport_cost_pune">
+                        Transport Cost to Pune Market per kg (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="transport_cost_pune"
+                        name="transport_cost_pune"
+                        min="0"
+                        step="0.01"
+                        value="{{ transport_cost_pune }}"
+                        placeholder="Enter Pune transport cost"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="transport_cost_ratnagiri">
+                        Transport Cost to Ratnagiri Market per kg (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="transport_cost_ratnagiri"
+                        name="transport_cost_ratnagiri"
+                        min="0"
+                        step="0.01"
+                        value="{{ transport_cost_ratnagiri }}"
+                        placeholder="Enter Ratnagiri transport cost"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Compare Selling Quantities →
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+        <div class="error">
+            ⚠️ {{ error }}
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- QUANTITY COMPARISON RESULTS -->
+
+    {% if quantity_results %}
+
+    <div class="card">
+
+        <div class="results-heading">
+
+            <span class="eyebrow">📊 PROFITABILITY ANALYSIS</span>
+
+            <h2>Quantity-wise Profit Comparison</h2>
+
+            <p>
+                Compare estimated profits at different selling quantities
+                and see which market offers the highest estimated return.
+            </p>
+
+        </div>
+
+
+        <div class="product-highlight">
+
+            Selected Product:
+            <strong>{{ selected_product }}</strong>
+
+        </div>
+
+
+        {% for item in quantity_results %}
+
+        <div class="quantity-section">
+
+            <div class="quantity-heading">
+
+                <h3>{{ item.quantity }} kg Selling Quantity</h3>
+
+                <span class="quantity-tag">
+                    Quantity Analysis
+                </span>
+
+            </div>
+
+
+            <div class="best-box">
+
+                <div>
+                    Highest Estimated Profit:
+                    <span class="best-profit">
+                        ₹{{ "%.2f"|format(item.best_profit) }}
+                    </span>
+                </div>
+
+                <div>
+                    Recommended Market:
+                    <strong>{{ item.best_market }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Market</th>
+                            <th>Selling Price/kg</th>
+                            <th>Transport Cost/kg</th>
+                            <th>Profit/kg</th>
+                            <th>Total Estimated Profit</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for market in item.market_results %}
+
+                        <tr>
+
+                            <td><strong>{{ market.market }}</strong></td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(market.price) }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(market.transport) }}
+                            </td>
+
+                            <td>
+
+                                {% if market.profit_per_kg >= 0 %}
+
+                                <span class="best">
+                                    ₹{{ "%.2f"|format(market.profit_per_kg) }}
+                                </span>
+
+                                {% else %}
+
+                                <span class="loss">
+                                    ₹{{ "%.2f"|format(market.profit_per_kg) }}
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if market.total_profit >= 0 %}
+
+                                <span class="best">
+                                    ₹{{ "%.2f"|format(market.total_profit) }}
+                                </span>
+
+                                {% else %}
+
+                                <span class="loss">
+                                    ₹{{ "%.2f"|format(market.total_profit) }}
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- EXPLANATION -->
+
+    <div class="card">
+
+        <h3>💡 How This Advisor Helps</h3>
+
+        <p class="description">
+            This tool calculates estimated profitability for different
+            selling quantities using available market prices and your
+            entered production and transportation costs.
+        </p>
+
+        <p class="note">
+            <strong>Profit per kg</strong> = Selling price − Production cost − Transport cost.
+            <br>
+            <strong>Total estimated profit</strong> = Profit per kg × Selling quantity.
+        </p>
+
+    </div>
+
+
+    <a class="back" href="/">
+        ← Back to Home
+    </a>
+
+
+    <p class="note">
+        Selling prices are based on a downloaded government mandi
+        data snapshot and may not represent current live prices.
+        Production and transport costs are entered by the user.
+        Estimated profits are not guaranteed actual earnings.
+    </p>
+
+</div>
+
+
+<footer>
+
+    <strong>GramVyapar AI</strong>
+
+    <br>
+
+    Supporting Rural Entrepreneurs in Maharashtra
+
+    <br>
+
+    <span>Data-driven decisions for better business opportunities.</span>
+
+</footer>
+
+</body>
+</html>

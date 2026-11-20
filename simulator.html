@@ -1,0 +1,952 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GramVyapar AI | Business Simulator</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #176b45;
+            --dark-green: #104c32;
+            --light-green: #eaf5ed;
+            --mint: #dff1e5;
+            --background: #f3f7f3;
+            --text: #24352b;
+            --muted: #738078;
+            --border: #e5ece6;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVIGATION */
+
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 17px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .brand h1 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin: 0;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #526158;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--green);
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 88%;
+            max-width: 1000px;
+            margin: 38px auto 55px;
+        }
+
+        .page-heading {
+            margin-bottom: 27px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--green);
+            background: var(--mint);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .page-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 32px;
+            margin: 0 0 10px;
+            font-weight: 800;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 750px;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* PANELS */
+
+        .panel {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 22px rgba(24, 75, 46, 0.045);
+        }
+
+        .panel h3 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .description {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 21px;
+            margin-top: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 9px;
+            font-size: 13px;
+            color: #415347;
+        }
+
+        input {
+            padding: 13px 14px;
+            border: 1px solid #dce6dd;
+            border-radius: 10px;
+            font-size: 15px;
+            width: 100%;
+            font-family: inherit;
+            background: #fbfdfb;
+            color: var(--text);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 27px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(23, 107, 69, 0.18);
+        }
+
+        /* RESULT */
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(120deg, #e7f5eb, #f1f9f3);
+            border: 1px solid #d5eadb;
+            border-left: 5px solid var(--green);
+            border-radius: 14px;
+        }
+
+        .result h3 {
+            color: var(--dark-green);
+            margin-top: 0;
+        }
+
+        .result p {
+            color: #52665a;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .profit {
+            font-family: 'Manrope', sans-serif;
+            font-size: 31px;
+            font-weight: 800;
+            color: #168044;
+            overflow-wrap: anywhere;
+        }
+
+        .loss {
+            color: #c0392b;
+        }
+
+        .result-status {
+            margin-top: 13px;
+            padding: 12px 15px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* SCENARIO COMPARISON */
+
+        .scenario-section {
+            margin-top: 34px;
+        }
+
+        .section-heading {
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 24px;
+            margin: 0 0 8px;
+            font-weight: 800;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 20px rgba(24, 75, 46, 0.04);
+        }
+
+        .chart-card h3 {
+            color: var(--dark-green);
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            margin-top: 0;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 340px;
+            margin: 15px auto;
+            position: relative;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 25px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--green);
+            color: white;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f2f8f3;
+        }
+
+        .scenario-note {
+            background: #f5f9f5;
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 11px;
+            color: #52665a;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 22px;
+        }
+
+        .scenario-note strong {
+            color: var(--dark-green);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--dark-green);
+            transform: translateX(-3px);
+        }
+
+        .note {
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 27px 15px;
+            background: var(--dark-green);
+            color: #e3f0e7;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 850px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            .container {
+                width: 92%;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                gap: 13px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 93%;
+                margin: 25px auto 40px;
+            }
+
+            .page-heading h2 {
+                font-size: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel,
+            .chart-card {
+                padding: 19px;
+                border-radius: 14px;
+            }
+
+            .chart-container {
+                height: 280px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        <div class="brand-icon">🌱</div>
+        <h1>GramVyapar AI</h1>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/simulator" class="active">Business Simulator</a>
+        <a href="/small-quantity-advisor">Small Quantity Advisor</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="page-heading">
+
+        <span class="eyebrow">🧮 BUSINESS PLANNING TOOL</span>
+
+        <h2>What-If Business Simulator</h2>
+
+        <p>
+            Experiment with different selling prices, production expenses
+            and transportation costs. Understand how your estimated
+            profitability changes before making a business decision.
+        </p>
+
+    </div>
+
+
+    <!-- SIMULATOR FORM -->
+
+    <div class="panel">
+
+        <h3>⚙️ Enter Your Business Details</h3>
+
+        <p class="description">
+            Adjust the values below to calculate your estimated business profit or loss.
+        </p>
+
+        <form method="POST" action="/simulator">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="selling_price">Selling Price per Kg (₹)</label>
+
+                    <input
+                        type="number"
+                        id="selling_price"
+                        name="selling_price"
+                        min="0"
+                        step="0.01"
+                        value="{{ request.form.get('selling_price', 36) }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="production_cost">Production Cost per Kg (₹)</label>
+
+                    <input
+                        type="number"
+                        id="production_cost"
+                        name="production_cost"
+                        min="0"
+                        step="0.01"
+                        value="{{ request.form.get('production_cost', 15) }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="transport_cost">Transportation Cost per Kg (₹)</label>
+
+                    <input
+                        type="number"
+                        id="transport_cost"
+                        name="transport_cost"
+                        min="0"
+                        step="0.01"
+                        value="{{ request.form.get('transport_cost', 7) }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quantity">Quantity to Sell (Kg)</label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="0.01"
+                        step="0.01"
+                        value="{{ request.form.get('quantity', 100) }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Calculate Estimated Profit →
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ORIGINAL RESULT -->
+
+    {% if result is not none %}
+
+    <div class="result">
+
+        <h3>📊 Your Business Analysis</h3>
+
+        <p>
+            Profit per Kg:
+            <strong>₹{{ "%.2f"|format(profit_per_kg) }}</strong>
+        </p>
+
+        <p>
+            Break-even Selling Price:
+            <strong>₹{{ "%.2f"|format(break_even_price) }}/kg</strong>
+        </p>
+
+        <p>Estimated Total Profit / Loss:</p>
+
+        <div class="profit {% if result < 0 %}loss{% endif %}">
+            ₹{{ "%.2f"|format(result) }}
+        </div>
+
+        <div class="result-status">
+
+            {% if result > 0 %}
+
+                ✅ Your business is estimated to be profitable.
+
+            {% elif result == 0 %}
+
+                ⚖️ Your business is at the break-even point.
+
+            {% else %}
+
+                ⚠️ Your business is estimated to make a loss.
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- SCENARIO COMPARISON -->
+
+    <div class="scenario-section">
+
+        <div class="section-heading">
+
+            <span class="eyebrow">📈 SCENARIO ANALYSIS</span>
+
+            <h2>Business Scenario Comparison</h2>
+
+            <p>
+                Compare estimated profitability when the selling price
+                decreases or increases by 10%.
+            </p>
+
+        </div>
+
+
+        <!-- CHART -->
+
+        <div class="chart-card">
+
+            <h3>Estimated Profit Across Three Scenarios</h3>
+
+            <div class="chart-container">
+                <canvas id="scenarioChart"></canvas>
+            </div>
+
+        </div>
+
+
+        <!-- COMPARISON TABLE -->
+
+        <div class="panel" style="margin-top: 23px;">
+
+            <h3>📋 Scenario Comparison Table</h3>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Business Scenario</th>
+                            <th>Selling Price / Kg</th>
+                            <th>Estimated Profit / Loss</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Price decreases by 10%</td>
+                            <td id="lowPrice">-</td>
+                            <td id="lowProfit">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Current selling price</td>
+                            <td id="currentPrice">-</td>
+                            <td id="currentProfit">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Price increases by 10%</td>
+                            <td id="highPrice">-</td>
+                            <td id="highProfit">-</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="scenario-note">
+
+                <strong>How to understand this comparison:</strong>
+
+                <p>
+                    The simulator compares three possible selling prices.
+                    Production cost, transportation cost and quantity
+                    remain unchanged in all three scenarios.
+                </p>
+
+                <p>
+                    These are hypothetical calculations, not predictions
+                    of actual future market prices.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <a href="/" class="back-btn">
+        ← Back to Home
+    </a>
+
+
+    <p class="note">
+        Calculations use the values entered by the user.
+        Estimated results are not guaranteed actual profits.
+    </p>
+
+</div>
+
+
+<footer>
+
+    <strong>GramVyapar AI</strong>
+
+    <br>
+
+    Supporting Rural Entrepreneurs in Maharashtra
+
+    <br>
+
+    <span>Data-driven decisions for better business opportunities.</span>
+
+</footer>
+
+
+{% if result is not none %}
+
+<script>
+
+    // Read values entered by the user
+
+    const sellingPrice = Number(
+        document.getElementById("selling_price").value
+    );
+
+    const productionCost = Number(
+        document.getElementById("production_cost").value
+    );
+
+    const transportCost = Number(
+        document.getElementById("transport_cost").value
+    );
+
+    const quantity = Number(
+        document.getElementById("quantity").value
+    );
+
+
+    // Calculate three selling price scenarios
+
+    const lowPrice = sellingPrice * 0.90;
+
+    const currentPrice = sellingPrice;
+
+    const highPrice = sellingPrice * 1.10;
+
+
+    // Calculate total profit for each scenario
+
+    function calculateProfit(price) {
+
+        return (
+            price - productionCost - transportCost
+        ) * quantity;
+
+    }
+
+
+    const lowProfit = calculateProfit(lowPrice);
+
+    const currentProfit = calculateProfit(currentPrice);
+
+    const highProfit = calculateProfit(highPrice);
+
+
+    // Format currency values
+
+    function formatRupees(value) {
+
+        return "₹" + value.toFixed(2);
+
+    }
+
+
+    // Display values in the comparison table
+
+    document.getElementById("lowPrice").textContent =
+        formatRupees(lowPrice);
+
+    document.getElementById("currentPrice").textContent =
+        formatRupees(currentPrice);
+
+    document.getElementById("highPrice").textContent =
+        formatRupees(highPrice);
+
+
+    document.getElementById("lowProfit").textContent =
+        formatRupees(lowProfit);
+
+    document.getElementById("currentProfit").textContent =
+        formatRupees(currentProfit);
+
+    document.getElementById("highProfit").textContent =
+        formatRupees(highProfit);
+
+
+    // Create the comparison chart
+
+    const chartCanvas = document.getElementById("scenarioChart");
+
+    new Chart(chartCanvas, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "Price -10%",
+                "Current Price",
+                "Price +10%"
+            ],
+
+            datasets: [{
+
+                label: "Estimated Profit / Loss (₹)",
+
+                data: [
+                    lowProfit,
+                    currentProfit,
+                    highProfit
+                ],
+
+                backgroundColor: [
+                    "#e6a15a",
+                    "#176b4a",
+                    "#58a77b"
+                ],
+
+                borderRadius: 7,
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: true
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            return "Estimated result: " +
+                                formatRupees(context.raw);
+
+                        }
+
+                    }
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: false,
+
+                    title: {
+                        display: true,
+                        text: "Estimated Profit / Loss (₹)"
+                    }
+
+                },
+
+                x: {
+
+                    title: {
+                        display: true,
+                        text: "Selling Price Scenario"
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+{% endif %}
+
+
+</body>
+
+</html>

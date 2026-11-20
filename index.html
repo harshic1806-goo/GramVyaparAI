@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GramVyapar AI | Smart Agriculture Platform</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #176b45;
+            --dark-green: #104b34;
+            --deep-green: #0b3024;
+            --mint: #dff5e7;
+            --light-green: #f1f8f3;
+            --text: #20352a;
+            --muted: #738078;
+            --border: #e3ece5;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f8f5;
+            color: var(--text);
+        }
+
+        /* NAVBAR */
+
+        header {
+            width: 100%;
+            background: rgba(255,255,255,0.96);
+            border-bottom: 1px solid #e8eee9;
+            padding: 16px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #176b45, #36a36c);
+            color: white;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 12px rgba(23,107,69,0.18);
+        }
+
+        .brand h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 21px;
+            font-weight: 800;
+            color: var(--dark-green);
+            letter-spacing: -0.7px;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #53645a;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 13px;
+            border-radius: 8px;
+            transition: 0.25s;
+        }
+
+        nav a:hover {
+            background: var(--light-green);
+            color: var(--green);
+        }
+
+        nav a.active {
+            background: #e9f5ec;
+            color: var(--green);
+        }
+
+        /* HERO SECTION */
+
+        .hero {
+            margin: 30px auto 0;
+            width: 86%;
+            max-width: 1250px;
+            min-height: 315px;
+            border-radius: 22px;
+            padding: 55px 7%;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 90% 15%, rgba(112, 205, 145, 0.28), transparent 28%),
+                linear-gradient(115deg, #0c3929, #176b45 65%, #248657);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 690px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.13);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(30px, 4vw, 46px);
+            line-height: 1.18;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 17px;
+        }
+
+        .hero h2 span {
+            color: #a7e9bd;
+        }
+
+        .hero p {
+            color: #d7ebdf;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 620px;
+        }
+
+        .hero-decoration {
+            position: absolute;
+            right: 7%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 92px;
+        }
+
+        .hero-decoration::before {
+            content: "";
+            position: absolute;
+            width: 235px;
+            height: 235px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+        }
+
+        /* MAIN LAYOUT */
+
+        .container {
+            width: 86%;
+            max-width: 1250px;
+            margin: 42px auto 65px;
+        }
+
+        .section-intro {
+            margin-bottom: 22px;
+        }
+
+        .eyebrow {
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 1.7px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .section-intro h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #1c3829;
+            letter-spacing: -0.7px;
+        }
+
+        .section-intro p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 7px;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 30px rgba(27,67,43,0.055);
+        }
+
+        .form-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 27px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: #e8f5eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .form-heading h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 20px;
+            color: var(--dark-green);
+        }
+
+        .form-heading p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            margin-bottom: 19px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            color: #34483b;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #dce7de;
+            border-radius: 9px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            color: #263c2f;
+            background: #fbfdfb;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        input:focus, select:focus {
+            border-color: #238653;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(35,134,83,0.09);
+        }
+
+        input::placeholder {
+            color: #a5b0a8;
+        }
+
+        .hint {
+            color: #849188;
+            font-size: 11px;
+            margin-top: 7px;
+            line-height: 1.5;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 13px 0 10px;
+            padding-top: 19px;
+            border-top: 1px solid var(--border);
+            color: var(--dark-green);
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+        }
+
+        .transport-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 17px;
+        }
+
+        .market-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .market-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #39a66c;
+        }
+
+        .market-dot.orange {
+            background: #e2a34a;
+        }
+
+        /* BUTTON */
+
+        button {
+            width: 100%;
+            background: linear-gradient(110deg, #176b45, #258a57);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 7px 17px rgba(23,107,69,0.19);
+            transition: 0.25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(23,107,69,0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* INFO BOX */
+
+        .info {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+            background: #f0f8f2;
+            border: 1px solid #dcefe1;
+            border-radius: 11px;
+            padding: 17px;
+            margin-top: 23px;
+            font-size: 12px;
+            line-height: 1.8;
+            color: #586c5d;
+        }
+
+        .info-icon {
+            font-size: 20px;
+        }
+
+        .info strong {
+            color: var(--dark-green);
+        }
+
+        /* FEATURES */
+
+        .features-heading {
+            margin-top: 48px;
+            margin-bottom: 20px;
+        }
+
+        .features-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 24px;
+            color: #1c3829;
+        }
+
+        .features-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 19px;
+        }
+
+        .feature {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 24px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: #a9d7b7;
+            box-shadow: 0 12px 27px rgba(27,67,43,0.08);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #eaf6ed;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .feature h4 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            color: #234331;
+            margin-bottom: 9px;
+        }
+
+        .feature p {
+            color: #78857c;
+            font-size: 12px;
+            line-height: 1.7;
+            min-height: 62px;
+        }
+
+        .feature a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .feature a:hover {
+            gap: 13px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #0d3526;
+            color: #d5e7da;
+            padding: 35px 7%;
+            text-align: center;
+        }
+
+        footer h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            font-size: 12px;
+            line-height: 1.8;
+            color: #b7cfc0;
+        }
+
+        .footer-bottom {
+            margin-top: 18px;
+            padding-top: 17px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            font-size: 11px;
+            color: #9ab6a4;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 900px) {
+            header {
+                padding: 15px 4%;
+            }
+
+            .hero, .container {
+                width: 92%;
+            }
+
+            .hero-decoration {
+                opacity: 0.35;
+                right: 3%;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                width: 100%;
+                gap: 3px;
+            }
+
+            nav a {
+                font-size: 11px;
+                padding: 9px 8px;
+            }
+
+            .hero {
+                margin-top: 18px;
+                padding: 40px 25px;
+                min-height: 290px;
+            }
+
+            .hero-decoration {
+                font-size: 65px;
+                width: 130px;
+                height: 130px;
+                right: -15px;
+                opacity: 0.2;
+            }
+
+            .hero h2 {
+                font-size: 31px;
+            }
+
+            .hero p {
+                font-size: 13px;
+            }
+
+            .container {
+                margin-top: 30px;
+            }
+
+            .form-card {
+                padding: 22px 17px;
+            }
+
+            .form-grid, .transport-grid, .features {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .section-intro h2 {
+                font-size: 22px;
+            }
+
+            .feature p {
+                min-height: auto;
+            }
+
+            .features-heading {
+                margin-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <header>
+
+        <div class="brand">
+
+            <div class="brand-icon">🌱</div>
+
+            <div>
+                <h1>GramVyapar AI</h1>
+                <p>Smart Agriculture. Better Decisions.</p>
+            </div>
+
+        </div>
+
+        <nav>
+            <a href="/" class="active">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/simulator">Business Simulator</a>
+            <a href="/small-quantity-advisor">Small Quantity Advisor</a>
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-tag">
+                🌿 SMART AGRICULTURE PLATFORM
+            </div>
+
+            <h2>
+                Grow Smarter.<br>
+                <span>Sell Better. Earn More.</span>
+            </h2>
+
+            <p>
+                Make informed market decisions with GramVyapar AI.
+                Compare mandi prices, calculate estimated profits
+                and discover better selling opportunities for
+                agricultural produce across Maharashtra.
+            </p>
+
+        </div>
+
+        <div class="hero-decoration">
+            🌾
+        </div>
+
+    </section>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="container">
+
+        <div class="section-intro">
+
+            <div class="eyebrow">Market Intelligence</div>
+
+            <h2>Find the Right Market for Your Produce</h2>
+
+            <p>
+                Enter your business details to compare market profitability.
+            </p>
+
+        </div>
+
+
+        <!-- PROFITABILITY FORM -->
+
+        <section class="form-card">
+
+            <div class="form-heading">
+
+                <div class="form-icon">📊</div>
+
+                <div>
+                    <h3>Market Profitability Advisor</h3>
+                    <p>Calculate and compare your estimated market returns.</p>
+                </div>
+
+            </div>
+
+
+            <form action="/recommend" method="POST">
+
+                <div class="form-grid">
+
+                    <div class="field">
+
+                        <label for="product">
+                            Agricultural Product
+                        </label>
+
+                        <select id="product" name="product" required>
+
+                            <option value="">-- Select Product --</option>
+
+                            {% for item in products %}
+                                <option value="{{ item }}">{{ item }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <p class="hint">
+                            Select the crop or product you want to sell.
+                        </p>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="quantity">
+                            Quantity to Sell (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            min="0.01"
+                            step="any"
+                            placeholder="Example: 100"
+                            required
+                        >
+
+                        <p class="hint">
+                            Enter the total quantity available for selling.
+                        </p>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="production_cost">
+                            Production Cost per kg (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="production_cost"
+                            name="production_cost"
+                            min="0"
+                            step="any"
+                            placeholder="Example: 15"
+                            required
+                        >
+
+                        <p class="hint">
+                            Include your estimated cultivation or production expenses.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <h4 class="section-heading">
+                    🚚 Transportation Cost Details
+                </h4>
+
+                <p class="hint">
+                    Enter the transportation cost for one kilogram of produce
+                    to each market.
+                </p>
+
+
+                <div class="transport-grid">
+
+                    <div class="field">
+
+                        <label for="transport_cost_pune">
+                            <span class="market-label">
+                                <span class="market-dot"></span>
+                                Pune (Moshi) Transport Cost (₹/kg)
+                            </span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="transport_cost_pune"
+                            name="transport_cost_pune"
+                            min="0"
+                            step="any"
+                            value="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="transport_cost_ratnagiri">
+                            <span class="market-label">
+                                <span class="market-dot orange"></span>
+                                Ratnagiri Transport Cost (₹/kg)
+                            </span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="transport_cost_ratnagiri"
+                            name="transport_cost_ratnagiri"
+                            min="0"
+                            step="any"
+                            value="0"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit">
+                    Calculate Profit & Find Best Market &nbsp; →
+                </button>
+
+            </form>
+
+
+            <!-- INFORMATION -->
+
+            <div class="info">
+
+                <div class="info-icon">💡</div>
+
+                <div>
+
+                    <strong>How GramVyapar AI works</strong><br>
+
+                    Estimated profit per kg =
+                    Selling price − Production cost − Transport cost.
+
+                    <br>
+
+                    Total estimated profit =
+                    Estimated profit per kg × Quantity.
+
+                    <br><br>
+
+                    <strong>Data transparency:</strong>
+
+                    Market prices are taken from a downloaded government
+                    mandi data snapshot, not a live feed. Actual selling
+                    prices and expenses may differ. Profit figures are
+                    estimates, not guaranteed earnings.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURES -->
+
+        <div class="features-heading">
+
+            <div class="eyebrow">Explore the Platform</div>
+
+            <h2>Tools to Support Your Business</h2>
+
+            <p>
+                Explore additional tools to analyse and plan your business.
+            </p>
+
+        </div>
+
+
+        <section class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">📈</div>
+
+                <h4>Analytics Dashboard</h4>
+
+                <p>
+                    Explore market prices, estimated profits,
+                    comparisons and business performance through charts.
+                </p>
+
+                <a href="/dashboard">
+                    Explore Dashboard →
+                </a>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">🧮</div>
+
+                <h4>What-If Simulator</h4>
+
+                <p>
+                    Experiment with different selling prices,
+                    production costs and transportation expenses.
+                </p>
+
+                <a href="/simulator">
+                    Open Simulator →
+                </a>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">🌾</div>
+
+                <h4>Small Quantity Advisor</h4>
+
+                <p>
+                    Compare estimated profits across different
+                    quantities of agricultural produce.
+                </p>
+
+                <a href="/small-quantity-advisor">
+                    Explore Advisor →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h3>🌱 GramVyapar AI</h3>
+
+        <p>
+            A Data-Driven Decision Support System for Rural Entrepreneurs
+            in Maharashtra.
+        </p>
+
+        <div class="footer-bottom">
+            Government mandi data snapshot · Not a live market feed
+            <br>
+            Empowering Rural Entrepreneurs Through Technology
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

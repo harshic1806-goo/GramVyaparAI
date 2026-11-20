@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GramVyapar AI - Business Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #176b45;
+            --dark-green: #104c32;
+            --light-green: #eaf5ed;
+            --mint: #dff1e5;
+            --background: #f3f7f3;
+            --text: #24352b;
+            --muted: #738078;
+            --border: #e5ece6;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVIGATION */
+
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 17px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .brand h1 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin: 0;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #526158;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--green);
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 35px auto 55px;
+        }
+
+        /* PAGE HEADING */
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--green);
+            background: var(--mint);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .page-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            font-size: 32px;
+            margin: 0 0 9px;
+            font-weight: 800;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 700px;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* PANELS */
+
+        .panel {
+            background: var(--white);
+            padding: 27px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 22px rgba(24, 75, 46, 0.045);
+        }
+
+        .panel h3,
+        .chart-box h3 {
+            font-family: 'Manrope', sans-serif;
+            color: var(--dark-green);
+            margin-top: 0;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: -7px;
+            margin-bottom: 23px;
+        }
+
+        /* FORM */
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 19px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #415347;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dce6dd;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fbfdfb;
+            color: var(--text);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.09);
+        }
+
+        button {
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            margin-top: 22px;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(23, 107, 69, 0.18);
+        }
+
+        /* STATISTICS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+            gap: 19px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 23px;
+            border-radius: 17px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 20px rgba(24, 75, 46, 0.04);
+            transition: 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(24, 75, 46, 0.08);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: var(--light-green);
+            right: -20px;
+            top: -20px;
+            opacity: 0.8;
+        }
+
+        .stat-icon {
+            font-size: 22px;
+            margin-bottom: 13px;
+            display: block;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            margin: 0 0 9px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stat-card h2 {
+            color: var(--dark-green);
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            overflow-wrap: anywhere;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* RECOMMENDATION */
+
+        .recommendation {
+            background: linear-gradient(120deg, #e7f5eb, #f1f9f3);
+            border: 1px solid #d5eadb;
+            border-left: 5px solid var(--green);
+            padding: 21px 23px;
+            border-radius: 13px;
+            line-height: 1.8;
+            color: #31523c;
+            font-size: 15px;
+        }
+
+        .break-even {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .break-even strong {
+            color: var(--green);
+            font-size: 17px;
+        }
+
+        /* CHARTS */
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 21px;
+            margin-bottom: 25px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 20px rgba(24, 75, 46, 0.04);
+            min-width: 0;
+            transition: 0.25s;
+        }
+
+        .chart-box:hover {
+            box-shadow: 0 9px 25px rgba(24, 75, 46, 0.07);
+        }
+
+        .chart-box h3 {
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: var(--green);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: #435448;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f3f9f4;
+        }
+
+        .positive {
+            color: #168044;
+            font-weight: 800;
+        }
+
+        .negative {
+            color: #c0392b;
+            font-weight: 800;
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 18px;
+        }
+
+        .data-source {
+            background: #f8fbf8;
+            border: 1px solid var(--border);
+            padding: 17px;
+            border-radius: 11px;
+            line-height: 1.7;
+            font-size: 14px;
+            color: #526158;
+            overflow-wrap: anywhere;
+        }
+
+        .data-source strong {
+            color: var(--dark-green);
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 27px 15px;
+            background: var(--dark-green);
+            color: #e3f0e7;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                gap: 13px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 93%;
+                margin-top: 25px;
+            }
+
+            .page-heading h2 {
+                font-size: 25px;
+            }
+
+            .panel,
+            .chart-box {
+                padding: 19px;
+                border-radius: 14px;
+            }
+
+            .stat-card {
+                padding: 19px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        <div class="brand-icon">🌱</div>
+        <h1>GramVyapar AI</h1>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/simulator">Business Simulator</a>
+        <a href="/small-quantity-advisor">Small Quantity Advisor</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <span class="eyebrow">📊 BUSINESS INTELLIGENCE</span>
+
+        <h2>Business Analysis Dashboard</h2>
+
+        <p>
+            Understand your business performance, compare mandi prices
+            and analyse estimated profitability to make smarter selling
+            decisions.
+        </p>
+
+    </div>
+
+
+    <!-- BUSINESS DETAILS FORM -->
+
+    <div class="panel">
+
+        <h3>⚙️ Update Business Details</h3>
+
+        <p class="section-description">
+            Enter your business information to generate an updated market analysis.
+        </p>
+
+        <form action="/dashboard" method="GET">
+
+            <div class="filter-grid">
+
+                <div class="form-group">
+
+                    <label for="product">Select Product</label>
+
+                    <select name="product" id="product">
+
+                        {% for item in available_products %}
+
+                        <option value="{{ item }}"
+                            {% if item == product %}selected{% endif %}>
+                            {{ item }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quantity">Quantity (kg)</label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        value="{{ quantity }}"
+                        min="1"
+                        step="any"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="production_cost">
+                        Production Cost (₹/kg)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="production_cost"
+                        name="production_cost"
+                        value="{{ production_cost }}"
+                        min="0"
+                        step="any"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="transport_cost_pune">
+                        Pune Transport Cost (₹/kg)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="transport_cost_pune"
+                        name="transport_cost_pune"
+                        value="{{ transport_cost_pune }}"
+                        min="0"
+                        step="any"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="transport_cost_ratnagiri">
+                        Ratnagiri Transport Cost (₹/kg)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="transport_cost_ratnagiri"
+                        name="transport_cost_ratnagiri"
+                        value="{{ transport_cost_ratnagiri }}"
+                        min="0"
+                        step="any"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <button type="submit">Update Analysis →</button>
+
+        </form>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="cards">
+
+        <div class="stat-card">
+
+            <span class="stat-icon">🌾</span>
+
+            <p>Selected Product</p>
+
+            <h2>{{ product }}</h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-icon">🏪</span>
+
+            <p>Markets Compared</p>
+
+            <h2>{{ markets | length }}</h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-icon">📍</span>
+
+            <p>Recommended Market</p>
+
+            <h2>{{ best_market }}</h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-icon">💰</span>
+
+            <p>Estimated Total Profit / Loss</p>
+
+            <h2>₹{{ "%.2f" | format(best_profit) }}</h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI RECOMMENDATION -->
+
+    <div class="panel">
+
+        <h3>🤖 AI Market Recommendation</h3>
+
+        <p class="section-description">
+            Your market recommendation based on the entered business costs and available mandi prices.
+        </p>
+
+        <div class="recommendation">
+            {{ message }}
+        </div>
+
+        <div class="break-even">
+
+            <span>Break-even selling price for the recommended market:</span>
+
+            <strong>
+                ₹{{ "%.2f" | format(break_even_price) }}/kg
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHARTS -->
+
+    <div class="page-heading">
+
+        <span class="eyebrow">📈 VISUAL INSIGHTS</span>
+
+        <h2>Market Performance Analytics</h2>
+
+        <p>
+            Visual comparison of selling prices, transport expenses and estimated profits across markets.
+        </p>
+
+    </div>
+
+
+    <div class="charts-grid">
+
+        <div class="chart-box">
+
+            <h3>Market-wise Selling Price</h3>
+
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="chart-box">
+
+            <h3>Estimated Profit / Loss</h3>
+
+            <div class="chart-container">
+                <canvas id="profitChart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="chart-box">
+
+            <h3>Market-wise Transport Cost</h3>
+
+            <div class="chart-container">
+                <canvas id="transportChart"></canvas>
+            </div>
+
+        </div>
+
+
+        <div class="chart-box">
+
+            <h3>Profit / Loss per kg</h3>
+
+            <div class="chart-container">
+                <canvas id="profitPerKgChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MARKET-WISE BUSINESS ANALYSIS -->
+
+    <div class="panel">
+
+        <h3>📋 Market-wise Business Analysis</h3>
+
+        <p class="section-description">
+            Detailed comparison of estimated financial performance in each available market.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Market</th>
+                        <th>Selling Price (₹/kg)</th>
+                        <th>Transport Cost (₹/kg)</th>
+                        <th>Profit / Loss (₹/kg)</th>
+                        <th>Total Profit / Loss (₹)</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for market in markets %}
+
+                    <tr>
+
+                        <td><strong>{{ market }}</strong></td>
+
+                        <td>
+                            ₹{{ "%.2f" | format(prices[loop.index0]) }}
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f" | format(transport_costs[loop.index0]) }}
+                        </td>
+
+                        <td>
+
+                            {% if profit_per_kg_values[loop.index0] >= 0 %}
+
+                            <span class="positive">
+                                ₹{{ "%.2f" | format(profit_per_kg_values[loop.index0]) }}
+                            </span>
+
+                            {% else %}
+
+                            <span class="negative">
+                                ₹{{ "%.2f" | format(profit_per_kg_values[loop.index0]) }}
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if profits[loop.index0] >= 0 %}
+
+                            <span class="positive">
+                                ₹{{ "%.2f" | format(profits[loop.index0]) }}
+                            </span>
+
+                            {% else %}
+
+                            <span class="negative">
+                                ₹{{ "%.2f" | format(profits[loop.index0]) }}
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+                            No market data available for this product.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <p class="note">
+            Transport costs are based on the values entered by the user.
+            Estimated profit is calculated using selling price, production
+            cost, transport cost and quantity. These values are estimates,
+            not guaranteed actual earnings.
+        </p>
+
+    </div>
+
+
+    <!-- DATA SOURCE -->
+
+    <div class="panel">
+
+        <h3>🌐 About the Data</h3>
+
+        <div class="data-source">
+
+            <strong>Data Source:</strong> {{ data_source }}
+
+        </div>
+
+        <p class="note">
+            Market prices are obtained from a downloaded government
+            mandi data snapshot. They may not represent current live
+            prices. Transport costs are entered by the user.
+            Demand information is not provided in the government dataset.
+        </p>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <strong>GramVyapar AI</strong>
+
+    <br>
+
+    Supporting Rural Entrepreneurs in Maharashtra
+
+    <br>
+
+    <span>Data-driven decisions for better business opportunities.</span>
+
+</footer>
+
+
+<!-- CHART DATA -->
+
+<div
+    id="chartData"
+    hidden
+    data-markets="{{ markets | tojson | forceescape }}"
+    data-prices="{{ prices | tojson | forceescape }}"
+    data-profits="{{ profits | tojson | forceescape }}"
+    data-transport-costs="{{ transport_costs | tojson | forceescape }}"
+    data-profit-per-kg="{{ profit_per_kg_values | tojson | forceescape }}">
+</div>
+
+
+<script>
+
+    const chartDataElement = document.getElementById("chartData");
+
+    const marketLabels = JSON.parse(
+        chartDataElement.dataset.markets
+    );
+
+    const sellingPrices = JSON.parse(
+        chartDataElement.dataset.prices
+    );
+
+    const estimatedProfits = JSON.parse(
+        chartDataElement.dataset.profits
+    );
+
+    const transportCosts = JSON.parse(
+        chartDataElement.dataset.transportCosts
+    );
+
+    const profitPerKg = JSON.parse(
+        chartDataElement.dataset.profitPerKg
+    );
+
+
+    // COMMON CHART SETTINGS
+
+    const commonOptions = {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            },
+
+            tooltip: {
+                backgroundColor: "#104c32",
+                padding: 12,
+                titleFont: {
+                    family: "DM Sans",
+                    size: 13
+                },
+                bodyFont: {
+                    family: "DM Sans",
+                    size: 12
+                }
+            }
+
+        },
+
+        scales: {
+
+            x: {
+                grid: {
+                    display: false
+                },
+
+                ticks: {
+                    font: {
+                        family: "DM Sans",
+                        size: 11
+                    }
+                }
+            },
+
+            y: {
+
+                beginAtZero: true,
+
+                grid: {
+                    color: "#edf2ed"
+                },
+
+                ticks: {
+                    font: {
+                        family: "DM Sans",
+                        size: 11
+                    }
+                }
+
+            }
+
+        }
+
+    };
+
+
+    // SELLING PRICE CHART
+
+    new Chart(document.getElementById("priceChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: marketLabels,
+
+            datasets: [{
+
+                label: "Selling Price (₹/kg)",
+
+                data: sellingPrices,
+
+                backgroundColor: "#3b9b68",
+
+                borderRadius: 7,
+
+                maxBarThickness: 65
+
+            }]
+
+        },
+
+        options: commonOptions
+
+    });
+
+
+    // ESTIMATED PROFIT / LOSS CHART
+
+    new Chart(document.getElementById("profitChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: marketLabels,
+
+            datasets: [{
+
+                label: "Estimated Profit / Loss (₹)",
+
+                data: estimatedProfits,
+
+                backgroundColor: estimatedProfits.map(
+                    value => value >= 0 ? "#3b9b68" : "#d9534f"
+                ),
+
+                borderRadius: 7,
+
+                maxBarThickness: 65
+
+            }]
+
+        },
+
+        options: commonOptions
+
+    });
+
+
+    // TRANSPORT COST CHART
+
+    new Chart(document.getElementById("transportChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: marketLabels,
+
+            datasets: [{
+
+                label: "Transport Cost (₹/kg)",
+
+                data: transportCosts,
+
+                backgroundColor: "#e0a43b",
+
+                borderRadius: 7,
+
+                maxBarThickness: 65
+
+            }]
+
+        },
+
+        options: commonOptions
+
+    });
+
+
+    // PROFIT PER KG CHART
+
+    new Chart(document.getElementById("profitPerKgChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: marketLabels,
+
+            datasets: [{
+
+                label: "Profit / Loss per kg (₹)",
+
+                data: profitPerKg,
+
+                backgroundColor: profitPerKg.map(
+                    value => value >= 0 ? "#3b9b68" : "#d9534f"
+                ),
+
+                borderRadius: 7,
+
+                maxBarThickness: 65
+
+            }]
+
+        },
+
+        options: commonOptions
+
+    });
+
+</script>
+
+</body>
+</html>
